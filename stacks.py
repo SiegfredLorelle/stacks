@@ -53,7 +53,9 @@ class App:
             "*******************************************"
         )
 
-        self.choice_manager(self.ask_for_choice())
+        choice = self.ask_for_choice()
+        
+        self.choice_manager(choice)
 
         buffer()
 
