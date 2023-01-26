@@ -6,6 +6,9 @@ class Stack:
         self.stack = arr.array("l", elements)
         self.top = len(elements)
     
+    def size(self):
+        return self.top
+
     def push(self, data):
         self.top += 1
         self.stack.append(data)
@@ -16,18 +19,18 @@ class Stack:
 
     def peak(self):
         # [self.top - 1] can be replaced with [-1], both will return the last element of the array
-        return self.stack[self.top - 1]
+        return self.stack[self.size() - 1]
         
     def display(self):
         # self.top can be replaced with len(self.stack), both returns the number of elements of the stack
-        if self.top == 0:
-            print("The stacks seems to be empty.\n")
-            break
+        if self.size() == 0:
+            print("\nThe stacks seems to be empty.")
+            return
 
         # Display the elements of the stack (The stack is reversed so that the element on top will be printed first)
         print("\nContents of the Stack:  ")
         [print(f"|          {data}          |") for data in arr.array("l", reversed(self.stack))]
-        print()
+
 
 
 
@@ -74,18 +77,16 @@ class App:
                 print(f"\nElement '{data}' is pushed on to the stack.")
                 self.stack.push(data)
                 self.stack.display()
+
             case "Pop":
                 try:
                     print(f"\nElement '{self.stack.pop()}' is popped out of the stack.")
-                    if self.stack.top != 0:
+                    if self.stack.size() != 0:
                         self.stack.display()
                 except IndexError:
-                    print("Stack seems to be empty. NOTHING was popped.\n")
+                    print("Stack seems to be empty. NOTHING was popped.")
 
             case "Display Stack":
-                if self.stack.top == 0:
-                    print("The stacks seems to be empty.\n")
-                else:
                     self.stack.display()
 
             case "Exit":
@@ -113,7 +114,7 @@ def ask_for_int(message):
 
 def buffer():
     """ Asks for any input, acts as a buffer to give enough time for the user to read """
-    input("Press any key to proceed:  ")
+    input("\nPress any key to proceed:  ")
 
 # END OF HELPER FUNCTIONS -----------------------------------------------------------------
 
