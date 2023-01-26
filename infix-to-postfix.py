@@ -43,53 +43,26 @@ class App:
         self.main_menu()
 
     def main_menu(self):
-        print("\n"
-            "*******************************************\n"
-            "**********   Main Menu           **********\n"
-            "**********   [1] Push            **********\n"
-            "**********   [2] Pop             **********\n"
-            "**********   [3] Display Stack   **********\n"
-            "**********   [4] Exit            **********\n"
-            "*******************************************"
-        )
+        print("\n**********   Infix to Postfix Conversion   **********\n")
 
-        self.choice_manager(self.ask_for_choice())
+        self.ask_for_infix()
+        
+        self.convert_to_postfix()
 
         buffer()
 
         self.main_menu()
+        
+    def ask_for_infix(self):
+        ...
+    
+    def convert_to_postfix(self):
+        ...
+    
 
 
-    def ask_for_choice(self):
-            while True:
-                choice = ask_for_int(("\nEnter number of your choice:  "))
-                if choice in App.choice_keys:
-                    return App.choice_keys[choice]
-                print("Choice must be 1-4 inclusive.")
 
 
-
-    def choice_manager(self, choice):
-        match choice:
-            case "Push":
-                data = ask_for_int("\nEnter data/value to push:  ")
-                print(f"\nElement '{data}' is pushed on to the stack.")
-                self.stack.push(data)
-                self.stack.display()
-
-            case "Pop":
-                try:
-                    print(f"\nElement '{self.stack.pop()}' is popped out of the stack.")
-                    if self.stack.size() != 0:
-                        self.stack.display()
-                except IndexError:
-                    print("\nStack seems to be empty. NOTHING was popped.")
-
-            case "Display Stack":
-                    self.stack.display()
-
-            case "Exit":
-                sys.exit("\nClosing the program ...\n")
 
 
 
