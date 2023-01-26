@@ -1,5 +1,6 @@
 import string
 import sys
+import re
 
 class Stack:
     def __init__(self, *elements):
@@ -17,11 +18,9 @@ class Stack:
         self.stack.append(data)
 
     def pop(self):
-        if not self.is_empty():
             return self.stack.pop()
 
     def peak(self):
-        if not self.is_empty():
             return self.stack[-1]
         
     def display(self):
@@ -54,36 +53,23 @@ class App:
     def main_menu(self):
         print("\n**********   Infix to Postfix Conversion   **********")
 
-        print("NOTE: each character of an operand is considered to be")
-
         infix = self.ask_for_infix()
         
         postfix = self.convert_to_postfix(infix)
 
-        print(postfix)
+        print("\n"
+            f"Postfix expression:  {postfix}"
+        )
 
-        buffer()
+        self.try_again()
 
-        self.main_menu()
 
     def ask_for_infix(self):
-            number_of_unclosed_parenthesis = 0
             
-            infix = input("\nEnter the infix expression:  ").replace(" ", "")
-            for character in infix:
-                if character == "(":
-                    number_of_unclosed_parenthesis += 1
-                elif character == ")":
-                    number_of_unclosed_parenthesis -= 1
-                    if number_of_unclosed_parenthesis < 0:
-                        print("Cannot read infix expression. Probably a problem with your parenthesis.")
-                        return self.ask_for_infix()
-                elif not (character in App.operands or character in App.operators):
-                    print(f"'{character}' is invalid.")
-                    return self.ask_for_infix()
-            if number_of_unclosed_parenthesis != 0:
-                print("Cannot read infix expression. Probably a problem with your parenthesis.")
-                return self.ask_for_infix()
+            infix = input("\nEnter the infix expression:  ")
+
+            infix = self.validate_infix(infix)
+
             return infix
 
 
@@ -114,19 +100,75 @@ class App:
 
         return " ".join(postfix_stack.stack)
 
+    def validate_infix(self, infix):
+        number_of_unclosed_parenthesis = 0
+        previous_character = ""
+        has_operand = has_operator = False
+
+        infix = re.sub("[\[{]", "(", infix)
+        infix = re.sub("[]}]", ")", infix)
+        infix = infix.replace(" ", "")
 
 
+        for index, character in enumerate(infix):
+
+            if character == "(":
+                number_of_unclosed_parenthesis += 1
+                previous_character = "parenthesis"
+            elif character == ")":
+                number_of_unclosed_parenthesis -= 1
+                previous_character = "parenthesis"
+                if number_of_unclosed_parenthesis < 0:
+                    print("Cannot read infix expression. There seems to be an unclosed parenthesis.")
+                    return self.ask_for_infix()
+            elif character in App.operands:
+                if previous_character == "operand":
+                    print(f"Cannot read infix expression. There is a problem with '{infix[index -1]}' and '{character}'. Infix expressions must have an operator between operands.")
+                    return self.ask_for_infix()
+                previous_character = "operand"
+                has_operand = True
+            elif character in App.operators:
+                if not has_operand:
+                    print(f"Cannot read infix expression. There is a problem with '{character}'. Infix expressions must start with an operand.")
+                    return self.ask_for_infix()
+
+                elif previous_character == "operator":
+                    print(f"Cannot read infix expression. There is a problem with '{infix[index -1]}' and '{character}'. Infix expressions must have an operand between operators.")
+                    return self.ask_for_infix()
+                has_operator = True
+                previous_character = "operator"
+            else:
+                print(f"'{character}' is invalid.")
+                return self.ask_for_infix()
+
+        if number_of_unclosed_parenthesis != 0:
+            print("Cannot read infix expression. There seems to be an unclosed parenthesis.")
+            return self.ask_for_infix()
+
+        if not has_operand or not has_operator:
+            print("Infix expression must have an operator and an operand.") 
+            return self.ask_for_infix()
+
+        if infix[-1] in App.operators:
+            print(f"Cannot read infix expression. There is a problem with '{infix[-1]}'. Infix expressions must end with an operand.")
+            return self.ask_for_infix()
+
+        return infix
 
 
+    def try_again(self):
+        ans = input("\nWould you like to try again? [y/n]:  ")
+        try:
+            match ans[0].lower():
+                case "n":
+                    sys.exit("\nThe program is closing ...\n")
+                case "y":
+                    self.main_menu()
+                case _:
+                    self.try_again()
+        except IndexError:
+            self.try_again()
 
-
-# HELPER FUNCTIONS ------------------------------------------------------------------------
-
-def buffer():
-    """ Asks for any input, acts as a buffer to give enough time for the user to read """
-    input("\nPress any key to proceed:  ")
-
-# END OF HELPER FUNCTIONS -----------------------------------------------------------------
 
 
 if __name__ == "__main__":
@@ -135,4 +177,4 @@ if __name__ == "__main__":
 
 
 # TODO
-# COMMENTS, TESTING, CATCH ERRORS LIKE INCOMPLETE PARENTHESIS, OR
+# COMMENTS, TESTING
