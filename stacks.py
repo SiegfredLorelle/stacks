@@ -26,7 +26,7 @@ class Stack:
         # Pop function without arguments, pops/deletes the last element of the list
         return self.stack.pop()
 
-    def peak(self):
+    def peek(self):
         """ Returns the element at the top of the stack """
         # -1 index is the last element of the list
         return self.stack[-1]

@@ -28,7 +28,7 @@ class Stack:
         # Pop function without arguments, pops/deletes the last element of the list
         return self.stack.pop()
 
-    def peak(self):
+    def peek(self):
         """ Returns the element at the top of the stack """
         # -1 index is the last element of the list
         return self.stack[-1]
@@ -107,7 +107,7 @@ class App:
             # If it is a closing parenthesis, then transfer all characters in operator stack to postfix stack until open parenthesis is on top of operator stack
             # If open parenthesis is on top of operator stack, then pop it
             elif character == ")":
-                while (not operator_stack.is_empty() and operator_stack.peak() != "("):
+                while (not operator_stack.is_empty() and operator_stack.peek() != "("):
                     postfix_stack.push(operator_stack.pop())
                 operator_stack.pop()
 
@@ -117,7 +117,7 @@ class App:
             # If current character has a higher level than the element on top, then push it operator stack
             else:
                 # Continue popping until the current character has a higher level in order of operation than the top element of the operator stack
-                while (not operator_stack.is_empty() and operator_stack.peak() != "(" and App.operators[operator_stack.peak()] >= App.operators[character]):
+                while (not operator_stack.is_empty() and operator_stack.peek() != "(" and App.operators[operator_stack.peek()] >= App.operators[character]):
                         postfix_stack.push(operator_stack.pop())
                 operator_stack.push(character)
 
