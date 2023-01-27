@@ -3,18 +3,18 @@ import sys
 import re
 
 class Stack:
-    """ linear data structure following Last In First Out Principle (LIFO), top of the stack is the only accessible element """
+    """ Linear data structure following Last In First Out Principle (LIFO), top of the stack is the only accessible element """
 
     def __init__(self, *elements):
-        """ stack is represented as a list, the top of the stack is the last element of the list """
+        """ Stack is represented as a list, the top of the stack is the last element of the list """
         self.stack = [element for element in elements]
     
     def size(self):
-        """ returns the number of elements in the stack """
+        """ Returns the number of elements in the stack """
         return len(self.stack)
 
     def is_empty(self):
-        """ returns true if stack is empty, else return false """
+        """ Returns true if stack is empty, else return false """
         if self.size() == 0:
             return True
         return False
@@ -32,14 +32,14 @@ class Stack:
         """ Returns the element at the top of the stack """
         # -1 index is the last element of the list
         return self.stack[-1]
-        
+
     def display(self):
         """ Displays the elements of the stack if it is not empty """
         # If stack is empty, simply inform user about it
         if self.is_empty():
             print("\nThe stacks seems to be empty.")
             return
-        
+
         # Display the elements of the stack (The stack is reversed so that the element on top will be printed first)
         print("\nContents of the Stack:  ")
         [print(f"|          {data}          |") for data in list(reversed(self.stack))]
@@ -48,7 +48,7 @@ class Stack:
 
 
 class App:
-    """ Holds the stack, manages communication between user and program """
+    """ Manages communication between user and program """
     # Operands and operators are class variable to let the entire class use them
     operands = string.ascii_letters + string.digits
     # Maps operator with its level in order of operations (higher means first)
