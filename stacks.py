@@ -14,7 +14,7 @@ class Stack:
         return self.stack.pop()
 
     def peak(self):
-        return self.stack[len(self.stack)]
+        return self.stack[-1]
         
     def display(self):
         if self.size() == 0:
